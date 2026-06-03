@@ -1,72 +1,157 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titan AI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Titan AI</title>
 
-    <style>
-        body{
-            margin:0;
-            background:#0a0a0a;
-            color:white;
-            font-family:Arial, sans-serif;
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
 
-        header{
-            padding:20px;
-            border-bottom:2px solid #00aaff;
-        }
+body{
+    background:#0a0a0a;
+    color:white;
+    height:100vh;
+}
 
-        h1{
-            color:#00aaff;
-            margin:0;
-        }
+.header{
+    height:60px;
+    border-bottom:1px solid #00aaff;
+    display:flex;
+    align-items:center;
+    padding-left:20px;
+}
 
-        .hero{
-            text-align:center;
-            padding:100px 20px;
-        }
+.logo{
+    color:#00aaff;
+    font-size:24px;
+    font-weight:bold;
+}
 
-        .hero h2{
-            font-size:48px;
-        }
+.container{
+    display:flex;
+    height:calc(100vh - 60px);
+}
 
-        .hero p{
-            font-size:20px;
-            color:#cfcfcf;
-        }
+.sidebar{
+    width:250px;
+    border-right:1px solid #1f1f1f;
+    padding:20px;
+}
 
-        button{
-            background:#00aaff;
-            color:white;
-            border:none;
-            padding:15px 30px;
-            border-radius:10px;
-            cursor:pointer;
-            font-size:18px;
-        }
+.new-chat{
+    width:100%;
+    background:#00aaff;
+    color:white;
+    border:none;
+    padding:10px;
+    border-radius:8px;
+    cursor:pointer;
+}
 
-        button:hover{
-            opacity:0.9;
-        }
-    </style>
+.chat-list{
+    margin-top:20px;
+}
+
+.chat-item{
+    padding:10px;
+    background:#141414;
+    border-radius:8px;
+    margin-bottom:10px;
+}
+
+.main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.messages{
+    flex:1;
+    padding:30px;
+}
+
+.welcome{
+    text-align:center;
+    margin-top:100px;
+}
+
+.welcome h1{
+    color:#00aaff;
+    margin-bottom:10px;
+}
+
+.input-area{
+    padding:20px;
+    border-top:1px solid #1f1f1f;
+    display:flex;
+    gap:10px;
+}
+
+input{
+    flex:1;
+    background:#141414;
+    border:1px solid #2a2a2a;
+    color:white;
+    padding:15px;
+    border-radius:10px;
+}
+
+button.generate{
+    background:#00aaff;
+    color:white;
+    border:none;
+    padding:15px 25px;
+    border-radius:10px;
+    cursor:pointer;
+}
+</style>
 </head>
+
 <body>
 
-<header>
-    <h1>Titan AI</h1>
-</header>
+<div class="header">
+    <div class="logo">Titan AI</div>
+</div>
 
-<section class="hero">
-    <h2>Your Roblox Development Partner</h2>
+<div class="container">
 
-    <p>
-        Generate scripts, build systems, and create Roblox games faster.
-    </p>
+    <div class="sidebar">
+        <button class="new-chat">+ New Chat</button>
 
-    <button>Get Started</button>
-</section>
+        <div class="chat-list">
+            <div class="chat-item">Welcome Chat</div>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <div class="messages">
+            <div class="welcome">
+                <h1>Titan AI</h1>
+                <p>Your Roblox Development Partner</p>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input
+                type="text"
+                placeholder="Create a sword system..."
+            >
+
+            <button class="generate">
+                Generate
+            </button>
+        </div>
+
+    </div>
+
+</div>
 
 </body>
 </html>
