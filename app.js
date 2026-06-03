@@ -12,12 +12,73 @@ function copyCode(button){
     },1500);
 }
 
+let chatCount = 1;
+
+function saveData(){
+
+    localStorage.setItem(
+        "titanMessages",
+        document.getElementById("messages").innerHTML
+    );
+
+    localStorage.setItem(
+        "titanChatList",
+        document.querySelector(".chat-list").innerHTML
+    );
+
+    localStorage.setItem(
+        "titanChatCount",
+        chatCount
+    );
+}
+
+function loadData(){
+
+    const messages =
+        localStorage.getItem("titanMessages");
+
+    const chatList =
+        localStorage.getItem("titanChatList");
+
+    const count =
+        localStorage.getItem("titanChatCount");
+
+    if(messages){
+        document.getElementById("messages").innerHTML =
+            messages;
+    }
+
+    if(chatList){
+        document.querySelector(".chat-list").innerHTML =
+            chatList;
+    }
+
+    if(count){
+        chatCount = Number(count);
+    }
+}
+
+function addChatToSidebar(){
+
+    const chatList =
+        document.querySelector(".chat-list");
+
+    chatList.innerHTML += `
+        <div class="chat-item">
+            Chat ${chatCount}
+        </div>
+    `;
+
+    chatCount++;
+
+    saveData();
+}
+
 function getResponse(prompt){
 
     const text = prompt.toLowerCase();
 
     if(text.includes("sword")){
-
         return `local Tool = Instance.new("Tool")
 Tool.Name = "Sword"
 
@@ -27,75 +88,39 @@ print("Sword System Created")`;
     }
 
     if(text.includes("leaderboard")){
-
         return `game.Players.PlayerAdded:Connect(function(player)
 
     local leaderstats = Instance.new("Folder")
     leaderstats.Name = "leaderstats"
     leaderstats.Parent = player
 
-    local Coins = Instance.new("IntValue")
-    Coins.Name = "Coins"
-    Coins.Value = 0
-    Coins.Parent = leaderstats
-
 end)`;
     }
 
     if(text.includes("shop")){
-
         return `local ShopItems = {
     Sword = 100,
     Potion = 50,
     Shield = 200
-}
-
-print("Shop System Loaded")`;
+}`;
     }
 
     if(text.includes("pet")){
-
         return `local Pet = Instance.new("Model")
-Pet.Name = "StarterPet"
-
-print("Pet System Created")`;
+Pet.Name = "StarterPet"`;
     }
 
     if(text.includes("datastore")){
-
         return `local DataStoreService =
-game:GetService("DataStoreService")
-
-local PlayerData =
-DataStoreService:GetDataStore("PlayerData")`;
+game:GetService("DataStoreService")`;
     }
 
     if(text.includes("gui")){
-
         return `local ScreenGui =
-Instance.new("ScreenGui")
-
-local Button =
-Instance.new("TextButton")
-
-Button.Text = "Click Me"`;
+Instance.new("ScreenGui")`;
     }
 
-    return `Titan AI could not identify the system.
-
-Try:
-
-Create a sword system
-
-Create a leaderboard
-
-Create a shop
-
-Create a pet system
-
-Create a datastore
-
-Create a GUI`;
+    return `Titan AI could not identify the system.`;
 }
 
 function generateResponse(){
@@ -133,7 +158,12 @@ function generateResponse(){
 
     setTimeout(()=>{
 
-        document.getElementById("thinking").remove();
+        const thinking =
+            document.getElementById("thinking");
+
+        if(thinking){
+            thinking.remove();
+        }
 
         const response =
             getResponse(prompt);
@@ -159,6 +189,8 @@ ${response}
         messages.scrollTop =
             messages.scrollHeight;
 
+        saveData();
+
     },1000);
 
     document.getElementById("prompt").value = "";
@@ -166,8 +198,25 @@ ${response}
 
 document.addEventListener("keydown",(e)=>{
 
-    if(e.key==="Enter"){
+    if(e.key === "Enter"){
         generateResponse();
     }
 
 });
+
+document.querySelector(".new-chat")
+.addEventListener("click",()=>{
+
+    addChatToSidebar();
+
+    document.getElementById("messages").innerHTML = `
+        <div class="welcome">
+            <h1>◈ Titan AI</h1>
+            <p>Your Roblox Development Partner</p>
+        </div>
+    `;
+
+    saveData();
+});
+
+loadData();
