@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Titan AI</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial,sans-serif;
+    font-family:Arial, sans-serif;
 }
 
 body{
     background:#0a0a0a;
     color:white;
     height:100vh;
+    overflow:hidden;
 }
 
 .header{
@@ -25,6 +27,7 @@ body{
     display:flex;
     align-items:center;
     padding-left:20px;
+    background:#0d0d0d;
 }
 
 .logo{
@@ -42,6 +45,7 @@ body{
     width:250px;
     border-right:1px solid #1f1f1f;
     padding:20px;
+    background:#0d0d0d;
 }
 
 .new-chat{
@@ -49,9 +53,10 @@ body{
     background:#00aaff;
     color:white;
     border:none;
-    padding:10px;
+    padding:12px;
     border-radius:8px;
     cursor:pointer;
+    font-weight:bold;
 }
 
 .chat-list{
@@ -59,7 +64,7 @@ body{
 }
 
 .chat-item{
-    padding:10px;
+    padding:12px;
     background:#141414;
     border-radius:8px;
     margin-bottom:10px;
@@ -73,7 +78,8 @@ body{
 
 .messages{
     flex:1;
-    padding:30px;
+    overflow-y:auto;
+    padding:20px;
 }
 
 .welcome{
@@ -86,6 +92,22 @@ body{
     margin-bottom:10px;
 }
 
+.user-message{
+    background:#181818;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.ai-message{
+    background:#001522;
+    border:1px solid #00aaff;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:15px;
+    white-space:pre-wrap;
+}
+
 .input-area{
     padding:20px;
     border-top:1px solid #1f1f1f;
@@ -93,26 +115,32 @@ body{
     gap:10px;
 }
 
-input{
+#prompt{
     flex:1;
     background:#141414;
     border:1px solid #2a2a2a;
     color:white;
     padding:15px;
     border-radius:10px;
+    outline:none;
 }
 
-button.generate{
+.generate{
     background:#00aaff;
     color:white;
     border:none;
     padding:15px 25px;
     border-radius:10px;
     cursor:pointer;
+    font-weight:bold;
 }
+
+.generate:hover{
+    opacity:0.9;
+}
+
 </style>
 </head>
-
 <body>
 
 <div class="header">
@@ -122,36 +150,159 @@ button.generate{
 <div class="container">
 
     <div class="sidebar">
-        <button class="new-chat">+ New Chat</button>
+
+        <button class="new-chat">
+            + New Chat
+        </button>
 
         <div class="chat-list">
-            <div class="chat-item">Welcome Chat</div>
+            <div class="chat-item">
+                Welcome Chat
+            </div>
         </div>
+
     </div>
 
     <div class="main">
 
-        <div class="messages">
+        <div class="messages" id="messages">
+
             <div class="welcome">
                 <h1>Titan AI</h1>
                 <p>Your Roblox Development Partner</p>
             </div>
+
         </div>
 
         <div class="input-area">
+
             <input
+                id="prompt"
                 type="text"
                 placeholder="Create a sword system..."
             >
 
-            <button class="generate">
+            <button
+                class="generate"
+                onclick="generateResponse()"
+            >
                 Generate
             </button>
+
         </div>
 
     </div>
 
 </div>
+
+<script>
+
+function generateResponse(){
+
+    const prompt =
+        document.getElementById("prompt").value.trim();
+
+    if(prompt === ""){
+        return;
+    }
+
+    const messages =
+        document.getElementById("messages");
+
+    const welcome =
+        document.querySelector(".welcome");
+
+    if(welcome){
+        welcome.remove();
+    }
+
+    messages.innerHTML += `
+        <div class="user-message">
+            <b>You:</b><br><br>
+            ${prompt}
+        </div>
+    `;
+
+    let response = "";
+
+    const text = prompt.toLowerCase();
+
+    if(text.includes("sword")){
+
+        response =
+`local Tool = Instance.new("Tool")
+Tool.Name = "Sword"
+
+local Damage = 25
+
+print("Sword Created")`;
+
+    }
+
+    else if(text.includes("leaderboard")){
+
+        response =
+`game.Players.PlayerAdded:Connect(function(player)
+
+    local leaderstats = Instance.new("Folder")
+    leaderstats.Name = "leaderstats"
+    leaderstats.Parent = player
+
+    local Coins = Instance.new("IntValue")
+    Coins.Name = "Coins"
+    Coins.Parent = leaderstats
+
+end)`;
+
+    }
+
+    else if(text.includes("part")){
+
+        response =
+`local part = Instance.new("Part")
+part.Size = Vector3.new(10,1,10)
+part.Parent = workspace`;
+
+    }
+
+    else{
+
+        response =
+`Titan AI Demo
+
+I understood:
+
+"${prompt}"
+
+In the next version I will generate
+real Roblox scripts.`;
+
+    }
+
+    messages.innerHTML += `
+        <div class="ai-message">
+            <b>Titan AI:</b><br><br>
+            ${response}
+        </div>
+    `;
+
+    document.getElementById("prompt").value = "";
+
+    messages.scrollTop =
+        messages.scrollHeight;
+
+}
+
+document.getElementById("prompt")
+.addEventListener("keydown", function(event){
+
+    if(event.key === "Enter"){
+        generateResponse();
+    }
+
+});
+
+</script>
 
 </body>
 </html>
